@@ -288,7 +288,7 @@ a:hover{
 
 .start {
   display: none;
-  position: sticky;
+  position: fixed;
   z-index: 1;
   width: 90vw;
   height: 90vh;
