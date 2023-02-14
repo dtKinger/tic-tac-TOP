@@ -40,7 +40,7 @@ div{
   --font-weight-h2: 700;
   --font-weight-h3: 600;
 
-  --section-height-header: 5vh;
+  --section-height-header: 0vh;
   --section-height-footer: 5vh;
   --section-height-main: calc(100vh - (var(--section-height-header) + var(--section-height-footer)));
 
@@ -243,13 +243,14 @@ a:hover{
 }
 
 .game-board{
+  position: relative;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   width: 80vw;
   height: 80vw;
   min-width: 300px;
   min-height: 300px;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
 }
 
 .square{
@@ -284,6 +285,26 @@ a:hover{
   font-size: 5vw;
   text-transform: uppercase;
 }
+
+.start {
+  display: none;
+  position: sticky;
+  z-index: 1;
+  width: 90vw;
+  height: 90vh;
+  background-color: rgba(255, 255, 255, 0.95);
+  left: 5%;
+  top: 5%;
+}
+
+.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: ease-in 0.5s;
+}
+
 
 /* Media queries */ 
 @media screen and (max-width: 600px){

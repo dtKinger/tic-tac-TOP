@@ -1,3 +1,5 @@
+const startBtn = document.getElementById('start-game');
+
 // gameBoard Module - inside an I
 let board = function () {
   let gameBoard = {
@@ -21,16 +23,22 @@ const player = (username, marker) => {
 
 function signIn() {
   let p1Name = prompt('Player 1 username');
-  let playerOne = player(p1Name, 'X');
+  playerOne = player(p1Name, 'X');
   document.getElementById('username1').textContent = playerOne.username;
   
-  
   let p2Name = prompt('Player 2 username');
-  let playerTwo = player('Computer', 'O');
+  playerTwo = player(p2Name, 'O');
+  document.getElementById('username2').textContent = playerTwo.username;
 }
 
-// Uncomment this to start a real game;
-// signIn(); 
+startBtn.addEventListener('click', () => {
+  signIn();
+  closeModal();
+});
+
+function closeModal(){
+  startBtn.parentElement.classList.remove('show');
+};
 
 // Winning configuartions
 /// Define possible wins
