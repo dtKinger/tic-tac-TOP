@@ -31,7 +31,7 @@ div{
   --color-accent-b-faded: rgba(187, 161, 11, 0.75);
 
   font-size: 18px;
-  --font-size-h1: 50px;
+  --font-size-h1: 9vw;
   --font-size-h2: 24px;
   --font-size-h3: 21px;
 
@@ -87,8 +87,8 @@ header, footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--color-text-secondary);
-  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
   padding: 10px;
 }
 
@@ -249,6 +249,7 @@ a:hover{
   height: 80vw;
   min-width: 300px;
   min-height: 300px;
+  margin-bottom: 10px;
 }
 
 .square{
@@ -272,11 +273,16 @@ a:hover{
 }
 
 .username{
-  font-size: max(1.5em, 8vw);
+  font-size: 7vw;
+}
+
+.head-to-head{
+  max-width: 80vw;
 }
 
 .vs {
-  font-size: max(1.5em, 7vw);
+  font-size: 5vw;
+  text-transform: uppercase;
 }
 
 /* Media queries */ 
