@@ -1,5 +1,6 @@
 const startBtn = document.getElementById('start-game');
 const squares = document.querySelectorAll('.square');
+let markers = document.querySelectorAll('.marker');
 
 // gameBoard Module - inside an I
 let board = (() => {
@@ -36,15 +37,23 @@ function signIn() {
   let p2Name = prompt('Player 2 username');
   playerTwo = player(p2Name, 'O');
   document.getElementById('username2').textContent = playerTwo.username;
+
 }
 
 startBtn.addEventListener('click', () => {
   signIn();
   closeModal();
+  dissolveMarkers();
 });
 
 function closeModal(){
   startBtn.parentElement.classList.remove('show');
+};
+
+function dissolveMarkers(){
+  markers.forEach((marker) => {
+    marker.classList.add('hidden');
+  });
 };
 
 // Winning configuartions

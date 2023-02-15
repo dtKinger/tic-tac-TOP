@@ -305,6 +305,11 @@ a:hover{
   transition: ease-in 0.5s;
 }
 
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 1s, opacity 1s linear;
+}
 
 /* Media queries */ 
 @media screen and (max-width: 600px){
