@@ -1,15 +1,22 @@
 const startBtn = document.getElementById('start-game');
+const squares = document.querySelectorAll('.square');
 
 // gameBoard Module - inside an I
-let board = function () {
-  let gameBoard = {
+let board = (() => {
+  gameBoard = {
     "spots": [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     "x-marked": [1, 4, 7],
     "o-marked": [0, 2, 8]
   };
 
+  render = function () {
+    for (i = 0; i < board.gameBoard.length; i += 1){
+      squares[i].textContent = board.gameBoard[i].value;
+    }
+  };
   // winning configs here?
-}();
+})();
+
 
 let playerOne = {"username": "", "marker": "X"};
 let playerTwo = {"username": "", "marker": "O"};
@@ -61,11 +68,11 @@ let winningConfigs = {
 function checkWinner(){
 /// if gameBoard matches winningConfig
 
-if (gameBoard == winningConfigs){
+if (board.gameBoard == winningConfigs){
   declareWinner();
 }
 /// Check for a Tie (full board, no win))
-else if (gameBoard.some('undefined' === false)){
+else if (board.gameBoard.some('undefined' === false)){
   declareTie();
 }
 };
