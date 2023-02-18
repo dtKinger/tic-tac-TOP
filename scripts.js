@@ -3,18 +3,20 @@ const squares = document.querySelectorAll('.square');
 const markers = document.querySelectorAll('.marker');
 
 // gameBoard Module - inside an IIFE
-let board = (() => {
-  gameBoard = {
+const board = (() => {
+  const gameBoard = {
     "spots": [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     "x-marked": [1, 4, 7],
     "o-marked": [0, 2, 8]
   };
 
-  render = function () {
+  const render = () => {
     for (i = 0; i < board.gameBoard.length; i += 1){
       squares[i].textContent = board.gameBoard[i].value;
     }
   };
+
+  return { gameBoard, render };
   // winning configs here?
 })();
 
