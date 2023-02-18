@@ -1,6 +1,6 @@
 const startBtn = document.getElementById('start-game');
 const squares = document.querySelectorAll('.square');
-let markers = document.querySelectorAll('.marker');
+const markers = document.querySelectorAll('.marker');
 
 // gameBoard Module - inside an I
 let board = (() => {
@@ -46,6 +46,13 @@ startBtn.addEventListener('click', () => {
   dissolveMarkers();
 });
 
+markers.forEach((marker) => {
+  marker.addEventListener('transitionend', () => {
+    marker.textContent = '';
+    marker.classList.remove('hidden')
+  });
+})
+
 function closeModal(){
   startBtn.parentElement.classList.remove('show');
 };
@@ -55,6 +62,7 @@ function dissolveMarkers(){
     marker.classList.add('hidden');
   });
 };
+
 
 // Winning configuartions
 /// Define possible wins
