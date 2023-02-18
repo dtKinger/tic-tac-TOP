@@ -5,14 +5,14 @@ const markers = document.querySelectorAll('.marker');
 // gameBoard Module - inside an IIFE
 const board = (() => {
   const gameBoard = {
-    "spots": [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    "spots": ["x", undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     "x-marked": [1, 4, 7],
     "o-marked": [0, 2, 8]
   };
 
   const render = () => {
-    for (i = 0; i < board.gameBoard.length; i += 1){
-      squares[i].textContent = board.gameBoard[i].value;
+    for (i = 0; i < board.gameBoard.spots.length; i += 1){
+      markers[i].textContent = board.gameBoard.spots[i];
     }
   };
 
