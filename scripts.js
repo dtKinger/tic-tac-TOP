@@ -12,13 +12,12 @@ const board = (() => {
     for (i = 0; i < board.gameBoard.length; i += 1){
       markers[i].textContent = board.gameBoard[i];
     }
+    game.changeActive();
   };
 
   return { gameBoard, render };
   // winning configs here?
 })();
-
-
 
 const game = (() => {
   
