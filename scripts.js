@@ -18,6 +18,39 @@ const board = (() => {
   // winning configs here?
 })();
 
+
+
+const game = (() => {
+  
+  let activePlayer = 'readyPlayerOne';
+
+  const changeActive = () => {
+    if (game.activePlayer === 'readyPlayerOne'){
+      game.activePlayer = 'readyPlayerTwo';
+    } else {
+      game.activePlayer = 'readyPlayerOne';
+    };
+  };
+
+    ///  Update board.gameBoard
+  const refreshBoard = () => {
+  gameBoard[i] = activePlayer.marker;
+  board.render();
+  }
+
+  return { activePlayer, changeActive, refreshBoard }
+})();
+
+
+
+
+
+
+
+// Need logic to control alternating turns between playerOne and playerTwo
+
+// 
+
 // Player factory function
 const player = (username, marker) => {
   username,
