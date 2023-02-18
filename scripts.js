@@ -4,15 +4,13 @@ const markers = document.querySelectorAll('.marker');
 
 // gameBoard Module - inside an IIFE
 const board = (() => {
-  const gameBoard = {
-    "spots": ["x", undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
-    "x-marked": [1, 4, 7],
-    "o-marked": [0, 2, 8]
-  };
+  const gameBoard = ['', 'x', '', '', '', '', '', '', '']
+    // "x-marked": [1, 4, 7],
+    // "o-marked": [0, 2, 8];
 
   const render = () => {
-    for (i = 0; i < board.gameBoard.spots.length; i += 1){
-      markers[i].textContent = board.gameBoard.spots[i];
+    for (i = 0; i < board.gameBoard.length; i += 1){
+      markers[i].textContent = board.gameBoard[i];
     }
   };
 
