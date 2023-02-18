@@ -4,19 +4,34 @@ const markers = document.querySelectorAll('.marker');
 
 // gameBoard Module - inside an IIFE
 const board = (() => {
-  const gameBoard = ['', 'x', '', '', '', '', '', '', '']
-    // "x-marked": [1, 4, 7],
-    // "o-marked": [0, 2, 8];
+  const gameBoard = {
+   "spots": ['', 'x', '', '', '', '', '', '', ''],
+    "x-marked": [1, 4, 7],
+    "o-marked": [0, 2, 8]
+  };
 
   const render = () => {
-    for (i = 0; i < board.gameBoard.length; i += 1){
-      markers[i].textContent = board.gameBoard[i];
+    for (i = 0; i < board.gameBoard.spots.length; i += 1){
+      markers[i].textContent = board.gameBoard.spots[i];
     }
     game.changeActive();
   };
 
-  return { gameBoard, render };
+  // Check for winner
+  
+  const checkWinner = () => {
+
+    if (board.gameBoard == winningConfigs){
+      declareWinner();
+    }
+    /// Check for a Tie (full board, no win))
+    else if (board.gameBoard.every() != ''){
+      declareTie();
+    }
+
+  return { gameBoard, render, gameStatus };
   // winning configs here?
+  };
 })();
 
 const game = (() => {
@@ -35,20 +50,13 @@ const game = (() => {
   const refreshBoard = () => {
   gameBoard[i] = activePlayer.marker;
   board.render();
+  // Check for a Winner
+  checkWinner();
   }
 
   return { activePlayer, changeActive, refreshBoard }
 })();
 
-
-
-
-
-
-
-// Need logic to control alternating turns between playerOne and playerTwo
-
-// 
 
 // Player factory function
 const player = (username, marker) => {
@@ -105,31 +113,19 @@ markers.forEach((marker) => {
 /// Define possible wins
 let winningConfigs = {
   // Row wins
-  "row1Win": [0, 1, 2],
-  "row2Win": [3, 4, 5],
-  "row3Win": [6, 7, 8],
+  "row1Win": [0, 1, 2], // 3
+  "row2Win": [3, 4, 5], // 12
+  "row3Win": [6, 7, 8], // 21
   // Col wins
-  "col1Win": [0, 3, 6],
-  "col2Win": [1, 4, 7],
-  "col3Win": [2, 5, 8],
+  "col1Win": [0, 3, 6], // 9
+  "col2Win": [1, 4, 7], // 12
+  "col3Win": [2, 5, 8], // 15
   // Diagonal wins
-  "diagNESW": [2, 4, 6],
-  "diagSENW": [0, 4, 8],
+  "diagNESW": [2, 4, 6], // 12
+  "diagSENW": [0, 4, 8], // 12
 };
 
 
-// Check for winner
-function checkWinner(){
-/// if gameBoard matches winningConfig
-
-if (board.gameBoard == winningConfigs){
-  declareWinner();
-}
-/// Check for a Tie (full board, no win))
-else if (board.gameBoard.some('undefined' === false)){
-  declareTie();
-}
-};
 
 function declareTie(){
   alert('Tie game!');
