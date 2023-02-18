@@ -2,7 +2,7 @@ const startBtn = document.getElementById('start-game');
 const squares = document.querySelectorAll('.square');
 const markers = document.querySelectorAll('.marker');
 
-// gameBoard Module - inside an I
+// gameBoard Module - inside an IIFE
 let board = (() => {
   gameBoard = {
     "spots": [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
@@ -18,16 +18,19 @@ let board = (() => {
   // winning configs here?
 })();
 
-
-let playerOne = {"username": "", "marker": "X"};
-let playerTwo = {"username": "", "marker": "O"};
-
 // Player factory function
 const player = (username, marker) => {
   username,
   marker
+  /* not sure how to make this method work atm
+  ,
+  changeName = () => {
+    let update = prompt('Enter a new username');
+    username = update;
+  };
+  */
   return { username, marker };
-}
+};
 
 function signIn() {
   let p1Name = prompt('Player 1 username');
@@ -46,23 +49,25 @@ startBtn.addEventListener('click', () => {
   dissolveMarkers();
 });
 
-markers.forEach((marker) => {
-  marker.addEventListener('transitionend', () => {
-    marker.textContent = '';
-    marker.classList.remove('hidden')
-  });
-})
 
 function closeModal(){
   startBtn.parentElement.classList.remove('show');
 };
 
+// Hidden class gives a fadeaway animation
 function dissolveMarkers(){
   markers.forEach((marker) => {
     marker.classList.add('hidden');
   });
 };
 
+// Empty the text contents and show the markup again
+markers.forEach((marker) => {
+  marker.addEventListener('transitionend', () => {
+    marker.textContent = '';
+    marker.classList.remove('hidden')
+  });
+})
 
 // Winning configuartions
 /// Define possible wins
