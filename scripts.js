@@ -1,3 +1,19 @@
+// Winning configuartions
+/// Define possible wins
+let winningConfigs = {
+  // Row wins
+  "row1Win": [0, 1, 2], // 3
+  "row2Win": [3, 4, 5], // 12
+  "row3Win": [6, 7, 8], // 21
+  // Col wins
+  "col1Win": [0, 3, 6], // 9
+  "col2Win": [1, 4, 7], // 12
+  "col3Win": [2, 5, 8], // 15
+  // Diagonal wins
+  "diagNESW": [2, 4, 6], // 12
+  "diagSENW": [0, 4, 8], // 12
+};
+
 const startBtn = document.getElementById('start-game');
 const squares = document.querySelectorAll('.square');
 const markers = document.querySelectorAll('.marker');
@@ -5,33 +21,43 @@ const markers = document.querySelectorAll('.marker');
 // gameBoard Module - inside an IIFE
 const board = (() => {
   const gameBoard = {
-   "spots": ['', 'x', '', '', '', '', '', '', ''],
-    "x-marked": [1, 4, 7],
-    "o-marked": [0, 2, 8]
+   "spots": ['x', 'x', 'o', 'x', 'o', '', 'x', '', ''],
+    "playerOne": [0, 1, 3, 6],
+    "playerTwo": [2, 4, 7]
   };
-
   const render = () => {
     for (i = 0; i < board.gameBoard.spots.length; i += 1){
       markers[i].textContent = board.gameBoard.spots[i];
     }
     game.changeActive();
   };
-
   // Check for winner
-  
-  const checkWinner = () => {
+    // const checkWinner = () => {
 
-    if (board.gameBoard == winningConfigs){
-      declareWinner();
-    }
-    /// Check for a Tie (full board, no win))
-    else if (board.gameBoard.every() != ''){
-      declareTie();
-    }
+      // Check where playerOne's markers are. 
+      // [0, 1, 3, 6] should win because [0, 3, 6] is a win
 
-  return { gameBoard, render, gameStatus };
+      /* Write as a for...in loop through object properties */
+
+      for (let prop in winningConfigs) {
+        console.log(`${prop}: ${object[prop]}`);
+      }
+
+      // for (let i = 0; i < winningConfigs.length; i += 1){
+      //   if (gameBoard.playerOne === winningConfigs[i]){
+      //     declareWinner(playerOne);
+      //   } else {
+      //   if (gameBoard.playerTwo == winningConfigs[i]){
+      //   declareWinner();
+      //   } else {
+      //     if (board.gameBoard.every() != ''){
+      //   declareTie();
+      //   }
+      // };
+    //};
+
+  return { gameBoard, render }; // Add , checkWinner to return
   // winning configs here?
-  };
 })();
 
 const game = (() => {
@@ -48,13 +74,13 @@ const game = (() => {
 
     ///  Update board.gameBoard
   const refreshBoard = () => {
-  gameBoard[i] = activePlayer.marker;
-  board.render();
+    board.gameBoard[i] = activePlayer.marker;
+    board.render();
   // Check for a Winner
-  checkWinner();
+    checkWinner();
   }
 
-  return { activePlayer, changeActive, refreshBoard }
+  return { activePlayer, changeActive, refreshBoard };
 })();
 
 
@@ -108,23 +134,6 @@ markers.forEach((marker) => {
     marker.classList.remove('hidden')
   });
 })
-
-// Winning configuartions
-/// Define possible wins
-let winningConfigs = {
-  // Row wins
-  "row1Win": [0, 1, 2], // 3
-  "row2Win": [3, 4, 5], // 12
-  "row3Win": [6, 7, 8], // 21
-  // Col wins
-  "col1Win": [0, 3, 6], // 9
-  "col2Win": [1, 4, 7], // 12
-  "col3Win": [2, 5, 8], // 15
-  // Diagonal wins
-  "diagNESW": [2, 4, 6], // 12
-  "diagSENW": [0, 4, 8], // 12
-};
-
 
 
 function declareTie(){
