@@ -1,3 +1,7 @@
+
+let currentX = [0, 3, 2, 6];
+
+
 // Winning configuartions
 /// Define possible wins
 let winningConfigs = {
@@ -14,14 +18,22 @@ let winningConfigs = {
   "diagSENW": [0, 4, 8], // 12
 };
 
+// Loop through each property of an Object
+for (let prop in winningConfigs){
+  if (winningConfigs[prop].every(value => currentX.includes(value))){
+    console.log(`It's a match!`)
+  };
+}
+
 const startBtn = document.getElementById('start-game');
 const squares = document.querySelectorAll('.square');
 const markers = document.querySelectorAll('.marker');
 
+
 // gameBoard Module - inside an IIFE
 const board = (() => {
   const gameBoard = {
-   "spots": ['x', 'x', 'o', 'x', 'o', '', 'x', '', ''],
+    "spots": ['x', 'x', 'o', 'x', 'o', '', 'x', '', ''],
     "playerOne": [0, 1, 3, 6],
     "playerTwo": [2, 4, 7]
   };
@@ -39,9 +51,7 @@ const board = (() => {
 
       /* Write as a for...in loop through object properties */
 
-      for (let prop in winningConfigs) {
-        console.log(`${prop}: ${object[prop]}`);
-      }
+      
 
       // for (let i = 0; i < winningConfigs.length; i += 1){
       //   if (gameBoard.playerOne === winningConfigs[i]){
@@ -59,6 +69,8 @@ const board = (() => {
   return { gameBoard, render }; // Add , checkWinner to return
   // winning configs here?
 })();
+
+
 
 const game = (() => {
   
@@ -143,3 +155,5 @@ function declareTie(){
 function declareWinner(){
   alert(`${winningPlayer} wins!`)
 };
+
+
