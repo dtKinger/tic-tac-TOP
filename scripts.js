@@ -1,5 +1,5 @@
-
-let currentX = [0, 3, 2, 6];
+// let currentX = [0, 3, 2, 6];
+let winningPlayer;
 
 
 // Winning configuartions
@@ -18,23 +18,19 @@ let winningConfigs = {
   "diagSENW": [0, 4, 8], // 12
 };
 
-// Loop through each property of an Object
-let index = 0
-for (let prop in winningConfigs){
-  if (winningConfigs[prop].every(value => currentX.includes(value))){
-    console.log(`Match found on ${winningConfigs}, (Index: ${index})`)
-  } else {
-    console.log(`Not this time.`)
-  };
-  index++;
-}
+// Replace currentX placeholder array with board.gameBoard.spots
 
-for (let [key, value] of Object.entries(winningConfigs)){
-  
-  if (value.every(value => currentX.includes(value))){
-    console.log(`Match found at ${key}, which checks for ${value}`)
-  }
-}
+// Loop through each property of an Object
+// let index = 0
+// for (let prop in winningConfigs){
+//   if (winningConfigs[prop].every(value => currentX.includes(value))){
+//     console.log(`Match found on ${winningConfigs}, (Index: ${index})`)
+//   } else {
+//     console.log(`Not this time.`)
+//   };
+//   index++;
+// }
+
 
 const startBtn = document.getElementById('start-game');
 const squares = document.querySelectorAll('.square');
@@ -44,9 +40,9 @@ const markers = document.querySelectorAll('.marker');
 // gameBoard Module - inside an IIFE
 const board = (() => {
   const gameBoard = {
-    "spots": ['x', 'x', 'o', 'x', 'o', '', 'x', '', ''],
-    "playerOne": [0, 1, 3, 6],
-    "playerTwo": [2, 4, 7]
+    "spots": ['x', 'x', 'o', 'x', 'o', '', 'x', 'o', ''],
+    "p1Choices": [0, 1, 3, 6],
+    "p2Choices": [2, 4, 7]
   };
   const render = () => {
     for (i = 0; i < board.gameBoard.spots.length; i += 1){
@@ -61,23 +57,23 @@ const board = (() => {
       // [0, 1, 3, 6] should win because [0, 3, 6] is a win
 
       /* Write as a for...in loop through object properties */
+    const checkWinner = () => {
+      for (let [key, value] of Object.entries(winningConfigs)){
+        if (value.every(value => board.gameBoard.p1Choices.includes(value))){
+          winningPlayer = player1;
+          console.log(`Match found at ${key}, which checks for ${value}`)
+          declareWinner();
+        } else if (value.every(value => board.gameBoard.p2Choices.includes(value))){
+          winningPlayer = player2;
+          console.log(`Match found at ${key}, which checks for ${value}`)
+          declareWinner();
+        } else {
+          checkTieGame();
+        };
+      };
+    };
 
-      
-
-      // for (let i = 0; i < winningConfigs.length; i += 1){
-      //   if (gameBoard.playerOne === winningConfigs[i]){
-      //     declareWinner(playerOne);
-      //   } else {
-      //   if (gameBoard.playerTwo == winningConfigs[i]){
-      //   declareWinner();
-      //   } else {
-      //     if (board.gameBoard.every() != ''){
-      //   declareTie();
-      //   }
-      // };
-    //};
-
-  return { gameBoard, render }; // Add , checkWinner to return
+  return { gameBoard, render, checkWinner }; // Add , checkWinner to return
   // winning configs here?
 })();
 
@@ -97,7 +93,7 @@ const game = (() => {
 
     ///  Update board.gameBoard
   const refreshBoard = () => {
-    board.gameBoard[i] = activePlayer.marker;
+    board.gameBoard[`${e.target["data-id"]}`] = activePlayer.marker;
     board.render();
   // Check for a Winner
     checkWinner();
@@ -108,9 +104,10 @@ const game = (() => {
 
 
 // Player factory function
-const player = (username, marker) => {
+const player = (username, marker, active ) => {
   username,
-  marker
+  marker,
+  active
   /* not sure how to make this method work atm
   ,
   changeName = () => {
@@ -118,18 +115,17 @@ const player = (username, marker) => {
     username = update;
   };
   */
-  return { username, marker };
+  return { username, marker, active };
 };
 
 function signIn() {
   let p1Name = prompt('Player 1 username');
-  playerOne = player(p1Name, 'X');
-  document.getElementById('username1').textContent = playerOne.username;
+  player1 = player(p1Name, 'X', true);
+  document.getElementById('username1').textContent = player1.username;
   
   let p2Name = prompt('Player 2 username');
-  playerTwo = player(p2Name, 'O');
-  document.getElementById('username2').textContent = playerTwo.username;
-
+  player2 = player(p2Name, 'O', false);
+  document.getElementById('username2').textContent = player2.username;
 }
 
 startBtn.addEventListener('click', () => {
@@ -143,7 +139,7 @@ function closeModal(){
   startBtn.parentElement.classList.remove('show');
 };
 
-// Hidden class gives a fadeaway animation
+// The "Hidden" class gives a fadeaway animation
 function dissolveMarkers(){
   markers.forEach((marker) => {
     marker.classList.add('hidden');
@@ -158,13 +154,18 @@ markers.forEach((marker) => {
   });
 })
 
+function checkTieGame () {
+  if (board.gameBoard.spots.every(value => (value != ''))){
+    delcateTie();
+  }
+};
 
 function declareTie(){
   alert('Tie game!');
 };
 
 function declareWinner(){
-  alert(`${winningPlayer} wins!`)
+  alert(`${winningPlayer.username} wins!`)
 };
 
 
