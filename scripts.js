@@ -19,10 +19,21 @@ let winningConfigs = {
 };
 
 // Loop through each property of an Object
+let index = 0
 for (let prop in winningConfigs){
   if (winningConfigs[prop].every(value => currentX.includes(value))){
-    console.log(`It's a match!`)
+    console.log(`Match found on ${winningConfigs}, (Index: ${index})`)
+  } else {
+    console.log(`Not this time.`)
   };
+  index++;
+}
+
+for (let [key, value] of Object.entries(winningConfigs)){
+  
+  if (value.every(value => currentX.includes(value))){
+    console.log(`Match found at ${key}, which checks for ${value}`)
+  }
 }
 
 const startBtn = document.getElementById('start-game');
