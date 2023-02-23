@@ -1,22 +1,3 @@
-// let currentX = [0, 3, 2, 6];
-let winningPlayer;
-
-
-// Winning configuartions
-/// Define possible wins
-let winningConfigs = {
-  // Row wins
-  "row1Win": [0, 1, 2], // 3
-  "row2Win": [3, 4, 5], // 12
-  "row3Win": [6, 7, 8], // 21
-  // Col wins
-  "col1Win": [0, 3, 6], // 9
-  "col2Win": [1, 4, 7], // 12
-  "col3Win": [2, 5, 8], // 15
-  // Diagonal wins
-  "diagNESW": [2, 4, 6], // 12
-  "diagSENW": [0, 4, 8], // 12
-};
 
 // Replace currentX placeholder array with board.gameBoard.spots
 
@@ -39,10 +20,19 @@ const markers = document.querySelectorAll('.marker');
 
 // gameBoard Module - inside an IIFE
 const board = (() => {
+
+  // Event listeners for marker squares
+  markers.forEach((marker) => {
+    marker.addEventListener('mouseup', (e) => {
+      marker.textContent = game.activePlayer.marker;
+      console.log(e);
+    });
+  });
+
   const gameBoard = {
-    "spots": ['x', 'x', 'o', 'x', 'o', '', 'x', 'o', ''],
-    "p1Choices": [0, 1, 3, 6],
-    "p2Choices": [2, 4, 7]
+    "spots": ['', '', '', '', '', '', '', '', ''],
+    "p1Choices": [],
+    "p2Choices": []
   };
   const render = () => {
     for (i = 0; i < board.gameBoard.spots.length; i += 1){
@@ -50,56 +40,85 @@ const board = (() => {
     }
     game.changeActive();
   };
-  // Check for winner
-    // const checkWinner = () => {
 
-      // Check where playerOne's markers are. 
-      // [0, 1, 3, 6] should win because [0, 3, 6] is a win
-
-      /* Write as a for...in loop through object properties */
-    const checkWinner = () => {
-      for (let [key, value] of Object.entries(winningConfigs)){
-        if (value.every(value => board.gameBoard.p1Choices.includes(value))){
-          winningPlayer = player1;
-          console.log(`Match found at ${key}, which checks for ${value}`)
-          declareWinner();
-        } else if (value.every(value => board.gameBoard.p2Choices.includes(value))){
-          winningPlayer = player2;
-          console.log(`Match found at ${key}, which checks for ${value}`)
-          declareWinner();
-        } else {
-          checkTieGame();
-        };
+  const checkWinner = () => {
+    checkTieGame();
+    // Check if player1 won
+    for (let [key, value] of Object.entries(game.winningConfigs)){
+      if (value.every(value => board.gameBoard.p1Choices.includes(value))){
+        game.winningPlayer = player1;
+        console.log(`Match found at ${key}, which checks for ${value}`)
+        declareWinner();
+        // Then check if player 2 won.
+      } else if (value.every(value => board.gameBoard.p2Choices.includes(value))){
+        game.winningPlayer = player2;
+        console.log(`Match found at ${key}, which checks for ${value}`)
+        declareWinner();
       };
-    };
-
-  return { gameBoard, render, checkWinner }; // Add , checkWinner to return
-  // winning configs here?
-})();
-
-
-
-const game = (() => {
-  
-  let activePlayer = 'readyPlayerOne';
-
-  const changeActive = () => {
-    if (game.activePlayer === 'readyPlayerOne'){
-      game.activePlayer = 'readyPlayerTwo';
-    } else {
-      game.activePlayer = 'readyPlayerOne';
     };
   };
 
-    ///  Update board.gameBoard
+  ///  Update board.gameBoard
   const refreshBoard = () => {
-    board.gameBoard[`${e.target["data-id"]}`] = activePlayer.marker;
+    game.oneTurn();
+    // Visually update the board to reflect new array.
     board.render();
-  // Check for a Winner
+    // Check for a Winner
     checkWinner();
   }
 
-  return { activePlayer, changeActive, refreshBoard };
+  return { gameBoard, render, checkWinner, refreshBoard }; // Add , checkWinner to return
+  // winning configs here?
+})();
+
+// Write something to update p1Choices with x values from board.gameBoard.spots
+// and p2CHoices from o values in board.gameBoard.spots.
+// Do this after the click event that grabs which spot was clicked
+// but right before checking winner.
+
+const game = (() => {
+
+  let winningPlayer;
+
+  // Winning configuartions
+  /// Define possible wins
+  let winningConfigs = {
+    // Row wins
+    "row1Win": [0, 1, 2], // 3
+    "row2Win": [3, 4, 5], // 12
+    "row3Win": [6, 7, 8], // 21
+    // Col wins
+    "col1Win": [0, 3, 6], // 9
+    "col2Win": [1, 4, 7], // 12
+    "col3Win": [2, 5, 8], // 15
+    // Diagonal wins
+    "diagNESW": [2, 4, 6], // 12
+    "diagSENW": [0, 4, 8], // 12
+  };
+  
+
+  const changeActive = () => {
+    if (game.activePlayer === 'player1'){
+      game.activePlayer = 'player2';
+    } else {
+      game.activePlayer = 'player1';
+    };
+  };
+
+  let activePlayer = 'player1';
+
+  const oneTurn = () => {
+    
+    // Add the click to gameBoard array
+    updateSpotsArray();
+    // board.gameBoard.spots[`${e.target["data-id"]}`] = activePlayer.marker;
+    updatePlayerChoices();
+    // Hand it over to other player
+    changeActive();
+  }
+
+
+  return { winningPlayer, winningConfigs, activePlayer, changeActive, oneTurn };
 })();
 
 
@@ -120,11 +139,11 @@ const player = (username, marker, active ) => {
 
 function signIn() {
   let p1Name = prompt('Player 1 username');
-  player1 = player(p1Name, 'X', true);
+  player1 = player(p1Name, 'x', true);
   document.getElementById('username1').textContent = player1.username;
   
   let p2Name = prompt('Player 2 username');
-  player2 = player(p2Name, 'O', false);
+  player2 = player(p2Name, 'o', false);
   document.getElementById('username2').textContent = player2.username;
 }
 
@@ -156,7 +175,7 @@ markers.forEach((marker) => {
 
 function checkTieGame () {
   if (board.gameBoard.spots.every(value => (value != ''))){
-    delcateTie();
+    declareTie();
   }
 };
 
@@ -165,7 +184,7 @@ function declareTie(){
 };
 
 function declareWinner(){
-  alert(`${winningPlayer.username} wins!`)
+  alert(`${game.winningPlayer.username} wins!`)
 };
 
 
