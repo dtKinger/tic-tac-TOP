@@ -32,11 +32,11 @@ const board = (() => {
       board.gameBoard.spots[choice] = game.activePlayer.marker;
       
       if (game.activePlayer.username == 'player1'){
-        board.gameBoard.p1Choices.push('x');
+        board.gameBoard.p1Choices.push(choice);
       } else if (game.activePlayer.username == 'player2'){
-        board.gameBoard.p2Choices.push(game.activePlayer.marker);
+        board.gameBoard.p2Choices.push(choice);
       }
-
+      // On a legal move, refresh the board
       board.refreshBoard();
       }
     });
@@ -62,12 +62,12 @@ const board = (() => {
     // Check if player1 won
     for (let [key, value] of Object.entries(game.winningConfigs)){
       if (value.every(value => board.gameBoard.p1Choices.includes(value))){
-        game.winningPlayer = player1;
+        game.winningPlayer = 'player1';
         console.log(`Match found at ${key}, which checks for ${value}`)
         declareWinner();
         // Then check if player 2 won.
       } else if (value.every(value => board.gameBoard.p2Choices.includes(value))){
-        game.winningPlayer = player2;
+        game.winningPlayer = 'player2';
         console.log(`Match found at ${key}, which checks for ${value}`)
         declareWinner();
       };
@@ -76,7 +76,7 @@ const board = (() => {
 
   ///  Update board.gameBoard
   const refreshBoard = () => {
-    // Visually update the board to reflect new array.
+    // Visually update the board to reflect new turn.
     board.render();
     // Check for a Winner
     checkWinner();
@@ -129,7 +129,7 @@ const game = (() => {
     };
   };
 
-  return { winningPlayer, winningConfigs, activePlayer, oneTurn };
+  return {  activePlayer, winningPlayer, winningConfigs, oneTurn };
 })();
 
 
