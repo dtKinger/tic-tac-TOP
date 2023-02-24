@@ -323,6 +323,7 @@ a:hover{
   text-shadow: 0 0 3px white;
   left: -200%;
   top: 25%;
+  transition: fade
 }
 
 .your-turn-2::after {

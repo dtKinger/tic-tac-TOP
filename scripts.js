@@ -28,7 +28,15 @@ const board = (() => {
     marker.addEventListener('mouseup', (e) => {
       if (marker.textContent == ''){
       marker.textContent = game.activePlayer.marker;
-      console.log(e);
+      let choice = e.target.getAttribute('data-id')
+      board.gameBoard.spots[choice] = game.activePlayer.marker;
+      
+      if (game.activePlayer.username == 'player1'){
+        board.gameBoard.p1Choices.push('x');
+      } else if (game.activePlayer.username == 'player2'){
+        board.gameBoard.p2Choices.push(game.activePlayer.marker);
+      }
+
       board.refreshBoard(e);
       }
     });
