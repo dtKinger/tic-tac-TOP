@@ -16,6 +16,8 @@
 const startBtn = document.getElementById('start-game');
 const squares = document.querySelectorAll('.square');
 const markers = document.querySelectorAll('.marker');
+const username1 = document.querySelector('#username1')
+const username2 = document.querySelector('#username2')
 
 
 // gameBoard Module - inside an IIFE
@@ -26,7 +28,7 @@ const board = (() => {
     marker.addEventListener('mouseup', (e) => {
       marker.textContent = game.activePlayer.marker;
       console.log(e);
-      board.refreshBoard();
+      board.refreshBoard(e);
     });
   });
 
@@ -109,22 +111,27 @@ const game = (() => {
     if (game.activePlayer.username === 'player1'){
       game.activePlayer.username = 'player2';
       game.activePlayer.marker = 'o';
+      username1.classList.remove('your-turn');
+      username2.classList.add('your-turn-2');
     } else {
       game.activePlayer.username = 'player1';
       game.activePlayer.marker = 'x';
+      username2.classList.remove('your-turn-2');
+      username1.classList.add('your-turn');
     };
   };
 
 
-  const oneTurn = () => {
-    
-    // Add the click to gameBoard array
-    board.gameBoard.spots[e.data-id].push(game.activePlayer.marker);
-    // board.gameBoard.spots[`${e.target["data-id"]}`] = activePlayer.marker;
-    // updatePlayerChoices();
-    // Hand it over to other player
-    changeActive();
-  }
+  const oneTurn = (e) => {
+    // if (board.gameBoard.spots[`${data-id}`] === ''){
+    // // Add the click to gameBoard array
+    // board.gameBoard.spots[e.data-id] = game.activePlayer.marker;
+    // // board.gameBoard.spots[`${e.target["data-id"]}`] = activePlayer.marker;
+    // // updatePlayerChoices();
+    // // Hand it over to other player
+    // changeActive();
+    // }
+  };
 
   return { winningPlayer, winningConfigs, activePlayer, changeActive, oneTurn };
 })();
@@ -153,6 +160,9 @@ function signIn() {
   let p2Name = prompt('Player 2 username');
   player2 = player(p2Name, 'o', false);
   document.getElementById('username2').textContent = player2.username;
+
+
+  username1.classList.add('your-turn');
 }
 
 startBtn.addEventListener('click', () => {
