@@ -54,7 +54,7 @@ const board = (() => {
         markers[i] = board.gameBoard.spots[i];
       }
     }
-    game.changeActive();
+    game.oneTurn();
   };
 
   const checkWinner = () => {
@@ -76,7 +76,6 @@ const board = (() => {
 
   ///  Update board.gameBoard
   const refreshBoard = () => {
-    game.oneTurn();
     // Visually update the board to reflect new array.
     board.render();
     // Check for a Winner
@@ -116,8 +115,7 @@ const game = (() => {
     "diagSENW": [0, 4, 8], // 12
   };
   
-
-  const changeActive = () => {
+  const oneTurn = () => {
     if (game.activePlayer.username === 'player1'){
       game.activePlayer.username = 'player2';
       game.activePlayer.marker = 'o';
@@ -131,19 +129,7 @@ const game = (() => {
     };
   };
 
-
-  const oneTurn = (e) => {
-    // if (board.gameBoard.spots[`${data-id}`] === ''){
-    // // Add the click to gameBoard array
-    // board.gameBoard.spots[e.data-id] = game.activePlayer.marker;
-    // // board.gameBoard.spots[`${e.target["data-id"]}`] = activePlayer.marker;
-    // // updatePlayerChoices();
-    // // Hand it over to other player
-    // changeActive();
-    // }
-  };
-
-  return { winningPlayer, winningConfigs, activePlayer, changeActive, oneTurn };
+  return { winningPlayer, winningConfigs, activePlayer, oneTurn };
 })();
 
 
