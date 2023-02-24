@@ -37,7 +37,7 @@ const board = (() => {
         board.gameBoard.p2Choices.push(game.activePlayer.marker);
       }
 
-      board.refreshBoard(e);
+      board.refreshBoard();
       }
     });
   });
@@ -82,7 +82,7 @@ const board = (() => {
     checkWinner();
   }
 
-  return { gameBoard, render, checkWinner, refreshBoard }; // Add , checkWinner to return
+  return { gameBoard, render, checkWinner, refreshBoard }; 
   // winning configs here?
 })();
 
