@@ -50,26 +50,24 @@ const board = (() => {
 
   const render = () => {
     for (i = 0; i < board.gameBoard.spots.length; i += 1){
-      if (board.gameBoard.spots[i]){
-        markers[i] = board.gameBoard.spots[i];
-      }
+      markers[i] = board.gameBoard.spots[i];
     }
     game.oneTurn();
   };
 
   const checkWinner = () => {
-    checkTieGame();
+    game.checkTieGame();
     // Check if player1 won
     for (let [key, value] of Object.entries(game.winningConfigs)){
       if (value.every(value => board.gameBoard.p1Choices.includes(value))){
         game.winningPlayer = 'player1';
         console.log(`Match found at ${key}, which checks for ${value}`)
-        declareWinner();
+        game.declareWinner();
         // Then check if player 2 won.
       } else if (value.every(value => board.gameBoard.p2Choices.includes(value))){
         game.winningPlayer = 'player2';
         console.log(`Match found at ${key}, which checks for ${value}`)
-        declareWinner();
+        game.declareWinner();
       };
     };
   };
@@ -129,7 +127,21 @@ const game = (() => {
     };
   };
 
-  return {  activePlayer, winningPlayer, winningConfigs, oneTurn };
+  const checkTieGame = () => {
+  if (board.gameBoard.spots.every(value => (value != ''))){
+    declareTie();
+  }
+};
+
+  const declareTie = () => {
+  alert('Tie game!');
+};
+
+  const declareWinner = () => {
+  alert(`${game.winningPlayer.username} wins!`)
+};
+
+  return {  activePlayer, winningPlayer, winningConfigs, oneTurn, checkTieGame, declareTie, declareWinner };
 })();
 
 
@@ -188,18 +200,5 @@ markers.forEach((marker) => {
 })
 
 
-function checkTieGame () {
-  if (board.gameBoard.spots.every(value => (value != ''))){
-    declareTie();
-  }
-};
-
-function declareTie(){
-  alert('Tie game!');
-};
-
-function declareWinner(){
-  alert(`${game.winningPlayer.username} wins!`)
-};
 
 
