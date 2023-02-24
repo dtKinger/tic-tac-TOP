@@ -278,6 +278,7 @@ a:hover{
 
 .username{
   font-size: 7vw;
+  position: relative;
 }
 
 .head-to-head{
@@ -313,6 +314,28 @@ a:hover{
   opacity: 0;
   transition: visibility 0s 1s, opacity 1s linear;
 }
+
+.your-turn::before {
+  content: 'Your turn';
+  position: absolute;
+  font-size: 4vw;
+  color: gold;
+  text-shadow: 0 0 3px white;
+  left: -200%;
+  top: 25%;
+}
+
+.your-turn-2::after {
+  content: 'Your turn';
+  position: absolute;
+  font-size: 4vw;
+  color: gold;
+  text-shadow: 0 0 3px white;
+  width: 130px;
+  left: 110%;
+  top: 25%;
+}
+
 
 /* Media queries */ 
 @media screen and (max-width: 600px){

@@ -26,6 +26,7 @@ const board = (() => {
     marker.addEventListener('mouseup', (e) => {
       marker.textContent = game.activePlayer.marker;
       console.log(e);
+      board.refreshBoard();
     });
   });
 
@@ -34,9 +35,12 @@ const board = (() => {
     "p1Choices": [],
     "p2Choices": []
   };
+
   const render = () => {
     for (i = 0; i < board.gameBoard.spots.length; i += 1){
-      markers[i].textContent = board.gameBoard.spots[i];
+      if (board.gameBoard.spots[i]){
+        markers[i] = board.gameBoard.spots[i];
+      }
     }
     game.changeActive();
   };
@@ -78,6 +82,10 @@ const board = (() => {
 
 const game = (() => {
 
+  let activePlayer = {
+    username: 'player1',
+    marker: 'x'
+  }
   let winningPlayer;
 
   // Winning configuartions
@@ -98,25 +106,25 @@ const game = (() => {
   
 
   const changeActive = () => {
-    if (game.activePlayer === 'player1'){
-      game.activePlayer = 'player2';
+    if (game.activePlayer.username === 'player1'){
+      game.activePlayer.username = 'player2';
+      game.activePlayer.marker = 'o';
     } else {
-      game.activePlayer = 'player1';
+      game.activePlayer.username = 'player1';
+      game.activePlayer.marker = 'x';
     };
   };
 
-  let activePlayer = 'player1';
 
   const oneTurn = () => {
     
     // Add the click to gameBoard array
-    updateSpotsArray();
+    board.gameBoard.spots[e.data-id].push(game.activePlayer.marker);
     // board.gameBoard.spots[`${e.target["data-id"]}`] = activePlayer.marker;
-    updatePlayerChoices();
+    // updatePlayerChoices();
     // Hand it over to other player
     changeActive();
   }
-
 
   return { winningPlayer, winningConfigs, activePlayer, changeActive, oneTurn };
 })();
@@ -172,6 +180,7 @@ markers.forEach((marker) => {
     marker.classList.remove('hidden')
   });
 })
+
 
 function checkTieGame () {
   if (board.gameBoard.spots.every(value => (value != ''))){
