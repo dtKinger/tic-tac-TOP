@@ -26,9 +26,11 @@ const board = (() => {
   // Event listeners for marker squares
   markers.forEach((marker) => {
     marker.addEventListener('mouseup', (e) => {
+      if (marker.textContent == ''){
       marker.textContent = game.activePlayer.marker;
       console.log(e);
       board.refreshBoard(e);
+      }
     });
   });
 
@@ -161,7 +163,7 @@ function signIn() {
   player2 = player(p2Name, 'o', false);
   document.getElementById('username2').textContent = player2.username;
 
-
+  // Init the first turn
   username1.classList.add('your-turn');
 }
 
