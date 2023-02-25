@@ -26,18 +26,17 @@ const board = (() => {
   // Event listeners for marker squares
   markers.forEach((marker) => {
     marker.addEventListener('mouseup', (e) => {
-      if (marker.textContent == ''){
-      marker.textContent = game.activePlayer.marker;
-      let choice = e.target.getAttribute('data-id')
-      board.gameBoard.spots[choice] = game.activePlayer.marker;
-      
-      if (game.activePlayer.username == 'player1'){
-        board.gameBoard.p1Choices.push(choice);
-      } else if (game.activePlayer.username == 'player2'){
-        board.gameBoard.p2Choices.push(choice);
-      }
-      // On a legal move, refresh the board
-      board.refreshBoard();
+      if (marker.textContent == '' && game.gameStatus != 'over'){
+        marker.textContent = game.activePlayer.marker;
+        let choice = e.target.getAttribute('data-id')
+        board.gameBoard.spots[choice] = game.activePlayer.marker;
+          if (game.activePlayer.username == 'player1'){
+            board.gameBoard.p1Choices.push(choice);
+          } else if (game.activePlayer.username == 'player2'){
+            board.gameBoard.p2Choices.push(choice);
+          }
+        // On a legal move, refresh the board
+        board.refreshBoard();
       }
     });
   });
@@ -59,16 +58,15 @@ const board = (() => {
     game.checkTieGame();
     // Check if player1 won
     for (let [key, value] of Object.entries(game.winningConfigs)){
-      console.log(`${key}: ${value}`);
       if (value.every(x => board.gameBoard.p1Choices.includes(x.toString()))){
-        game.winningPlayer = 'player1';
+        game.winningPlayer.username = 'player1';
         console.log(`Match found at ${key}, which checks for ${value}`)
-        game.declareWinner();
+        game.endGame();
         // Then check if player 2 won.
       } else if (value.every(x => board.gameBoard.p2Choices.includes(x.toString()))){
-        game.winningPlayer = 'player2';
+        game.winningPlayer.username = 'player2';
         console.log(`Match found at ${key}, which checks for ${value}`)
-        game.declareWinner();
+        game.endGame();
       };
     };
   };
@@ -96,7 +94,9 @@ const game = (() => {
     username: 'player1',
     marker: 'x'
   }
-  let winningPlayer;
+  let winningPlayer = {
+    username: ''
+  };
 
   // Winning configuartions
   /// Define possible wins
@@ -139,10 +139,21 @@ const game = (() => {
 };
 
   const declareWinner = () => {
-  alert(`${game.winningPlayer.username} wins!`)
+
+    setTimeout(function () {
+      alert(`${game.winningPlayer.username} wins!`);
+  }, 10);
+  // alert(`${game.winningPlayer.username} wins!`)
 };
 
-  return {  activePlayer, winningPlayer, winningConfigs, oneTurn, checkTieGame, declareTie, declareWinner };
+  let gameStatus = 'active';
+
+  const endGame = () => {
+    game.gameStatus = 'over';
+    declareWinner();  
+  }
+
+  return {  activePlayer, winningPlayer, winningConfigs, oneTurn, checkTieGame, declareTie, declareWinner, endGame, gameStatus };
 })();
 
 
