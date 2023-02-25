@@ -165,7 +165,9 @@ const game = (() => {
   const endGame = () => {
     game.gameStatus = 'over';
     hideTurnTag();
-    declareWinner();  
+    declareWinner();
+    // Learn how to execute this as a promise or async/await.
+    newGame(); 
   }
 
   return { signIn, activePlayer, winningPlayer, winningConfigs, oneTurn, checkTieGame, declareTie, declareWinner, endGame, gameStatus };
@@ -194,7 +196,6 @@ startBtn.addEventListener('click', () => {
   dissolveMarkers();
 });
 
-
 function closeModal(){
   startBtn.parentElement.classList.remove('show');
 };
@@ -219,4 +220,10 @@ function hideTurnTag(){
   username2.classList.remove('your-turn-2');
 };
 
+function newGame () {
+  // This doens't work because overlapping actions?
+  startBtn.parentElement.classList.add('show');
+  closeModal();
+  dissolveMarkers();
+}
 
