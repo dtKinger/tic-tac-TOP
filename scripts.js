@@ -141,6 +141,7 @@ const game = (() => {
   const declareWinner = () => {
 
     setTimeout(() => {
+      // This returns "player1 wins";
       alert(`${game.winningPlayer.username} wins!`);
   }, 10);
   // alert(`${game.winningPlayer.username} wins!`)

@@ -339,8 +339,31 @@ a:hover{
 
 
 /* Media queries */ 
-@media screen and (max-width: 600px){
+@media screen and (min-width: 586px){
 
+  .container h1 {
+    font-size: 56px;
+  }
 
+  .vs {
+    font-size: 29px;
+  }
+
+  .username {
+    font-size: 41px;
+  }
+
+  .game-board{
+    max-width: 470px;
+    max-height: 470px;
+  }
+
+  .your-turn::before {
+    font-size: 23.5px;
+  }
+
+  .your-turn-2::after {
+
+  }
 
 }
