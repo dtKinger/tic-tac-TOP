@@ -140,7 +140,7 @@ const game = (() => {
 
   const declareWinner = () => {
 
-    setTimeout(function () {
+    setTimeout(() => {
       alert(`${game.winningPlayer.username} wins!`);
   }, 10);
   // alert(`${game.winningPlayer.username} wins!`)
