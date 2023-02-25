@@ -55,20 +55,20 @@ const board = (() => {
   };
 
   const checkWinner = () => {
-    game.checkTieGame();
     // Check if player1 won
     for (let [key, value] of Object.entries(game.winningConfigs)){
       if (value.every(x => board.gameBoard.p1Choices.includes(x.toString()))){
-        game.winningPlayer.username = 'player1';
-        console.log(`Match found at ${key}, which checks for ${value}`)
+        game.winningPlayer.username = player1.username;
         game.endGame();
         // Then check if player 2 won.
       } else if (value.every(x => board.gameBoard.p2Choices.includes(x.toString()))){
-        game.winningPlayer.username = 'player2';
-        console.log(`Match found at ${key}, which checks for ${value}`)
+        game.winningPlayer.username = player2.username;
         game.endGame();
       };
     };
+    if (game.winningPlayer.username == ''){
+      game.checkTieGame();
+    }
   };
 
   ///  Update board.gameBoard
@@ -89,6 +89,19 @@ const board = (() => {
 // but right before checking winner.
 
 const game = (() => {
+
+  let signIn = () => {
+    let p1Name = prompt('Player 1 username');
+    player1 = player(p1Name, 'x', true);
+    document.getElementById('username1').textContent = player1.username;
+    
+    let p2Name = prompt('Player 2 username');
+    player2 = player(p2Name, 'o', false);
+    document.getElementById('username2').textContent = player2.username;
+
+    // Init the first turn
+    username1.classList.add('your-turn');
+  }
 
   let activePlayer = {
     username: 'player1',
@@ -154,12 +167,12 @@ const game = (() => {
     declareWinner();  
   }
 
-  return {  activePlayer, winningPlayer, winningConfigs, oneTurn, checkTieGame, declareTie, declareWinner, endGame, gameStatus };
+  return { signIn, activePlayer, winningPlayer, winningConfigs, oneTurn, checkTieGame, declareTie, declareWinner, endGame, gameStatus };
 })();
 
 
 // Player factory function
-const player = (username, marker, active ) => {
+const player = (username, marker, active) => {
   username,
   marker,
   active
@@ -173,21 +186,9 @@ const player = (username, marker, active ) => {
   return { username, marker, active };
 };
 
-function signIn() {
-  let p1Name = prompt('Player 1 username');
-  player1 = player(p1Name, 'x', true);
-  document.getElementById('username1').textContent = player1.username;
-  
-  let p2Name = prompt('Player 2 username');
-  player2 = player(p2Name, 'o', false);
-  document.getElementById('username2').textContent = player2.username;
-
-  // Init the first turn
-  username1.classList.add('your-turn');
-}
 
 startBtn.addEventListener('click', () => {
-  signIn();
+  game.signIn();
   closeModal();
   dissolveMarkers();
 });

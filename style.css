@@ -363,7 +363,11 @@ a:hover{
   }
 
   .your-turn-2::after {
+    font-size: 23.5px;
+  }
 
+  .marker {
+    font-size: 146px;
   }
 
 }
