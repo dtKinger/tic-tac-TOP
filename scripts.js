@@ -59,12 +59,13 @@ const board = (() => {
     game.checkTieGame();
     // Check if player1 won
     for (let [key, value] of Object.entries(game.winningConfigs)){
-      if (value.every(value => board.gameBoard.p1Choices.includes(value))){
+      console.log(`${key}: ${value}`);
+      if (value.every(x => board.gameBoard.p1Choices.includes(x.toString()))){
         game.winningPlayer = 'player1';
         console.log(`Match found at ${key}, which checks for ${value}`)
         game.declareWinner();
         // Then check if player 2 won.
-      } else if (value.every(value => board.gameBoard.p2Choices.includes(value))){
+      } else if (value.every(x => board.gameBoard.p2Choices.includes(x.toString()))){
         game.winningPlayer = 'player2';
         console.log(`Match found at ${key}, which checks for ${value}`)
         game.declareWinner();
