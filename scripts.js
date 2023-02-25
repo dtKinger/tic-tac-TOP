@@ -93,11 +93,11 @@ const game = (() => {
   let signIn = () => {
     let p1Name = prompt('Player 1 username');
     player1 = player(p1Name, 'x', true);
-    document.getElementById('username1').textContent = player1.username;
+    username1.textContent = player1.username;
     
     let p2Name = prompt('Player 2 username');
     player2 = player(p2Name, 'o', false);
-    document.getElementById('username2').textContent = player2.username;
+    username2.textContent = player2.username;
 
     // Init the first turn
     username1.classList.add('your-turn');
@@ -164,6 +164,7 @@ const game = (() => {
 
   const endGame = () => {
     game.gameStatus = 'over';
+    hideTurnTag();
     declareWinner();  
   }
 
@@ -213,6 +214,9 @@ markers.forEach((marker) => {
   });
 })
 
-
+function hideTurnTag(){
+  username1.classList.remove('your-turn');
+  username2.classList.remove('your-turn-2');
+};
 
 
