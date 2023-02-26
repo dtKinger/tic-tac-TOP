@@ -1,18 +1,3 @@
-
-// Replace currentX placeholder array with board.gameBoard.spots
-
-// Loop through each property of an Object
-// let index = 0
-// for (let prop in winningConfigs){
-//   if (winningConfigs[prop].every(value => currentX.includes(value))){
-//     console.log(`Match found on ${winningConfigs}, (Index: ${index})`)
-//   } else {
-//     console.log(`Not this time.`)
-//   };
-//   index++;
-// }
-
-
 const startBtn = document.getElementById('start-game');
 const squares = document.querySelectorAll('.square');
 const markers = document.querySelectorAll('.marker');
@@ -236,6 +221,8 @@ function showNewGame() {
 };
 
 function memBlur () {
+  p1Name = '';
+  p2Name = '';
   game.gameStatus = 'active'
   board.gameBoard = {
     "spots": ['', '', '', '', '', '', '', '', ''],
