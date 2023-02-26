@@ -17,7 +17,8 @@ const startBtn = document.getElementById('start-game');
 const squares = document.querySelectorAll('.square');
 const markers = document.querySelectorAll('.marker');
 const username1 = document.querySelector('#username1')
-const username2 = document.querySelector('#username2')
+const username2 = document.querySelector('#username2');
+const newGameBtn = document.querySelector('.new-game');
 
 
 // gameBoard Module - inside an IIFE
@@ -166,8 +167,6 @@ const game = (() => {
     game.gameStatus = 'over';
     hideTurnTag();
     declareWinner();
-    // Learn how to execute this as a promise or async/await.
-    newGame(); 
   }
 
   return { signIn, activePlayer, winningPlayer, winningConfigs, oneTurn, checkTieGame, declareTie, declareWinner, endGame, gameStatus };
@@ -194,6 +193,7 @@ startBtn.addEventListener('click', () => {
   game.signIn();
   closeModal();
   dissolveMarkers();
+  showNewGame();
 });
 
 function closeModal(){
@@ -220,10 +220,26 @@ function hideTurnTag(){
   username2.classList.remove('your-turn-2');
 };
 
+newGameBtn.addEventListener('click', () => {
+  newGame();
+  memBlur();
+});
+
 function newGame () {
-  // This doens't work because overlapping actions?
-  startBtn.parentElement.classList.add('show');
+  game.signIn();
   closeModal();
   dissolveMarkers();
 }
 
+function showNewGame() {
+  newGameBtn.classList.add('show')
+};
+
+function memBlur () {
+  game.gameStatus = 'active'
+  board.gameBoard = {
+    "spots": ['', '', '', '', '', '', '', '', ''],
+    "p1Choices": [],
+    "p2Choices": []
+  }
+}

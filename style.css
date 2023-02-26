@@ -302,13 +302,6 @@ a:hover{
   top: min(150px, 15vw);
 }
 
-.show {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: ease-in 0.5s;
-}
-
 .hidden {
   visibility: hidden;
   opacity: 0;
@@ -317,26 +310,33 @@ a:hover{
 
 .your-turn::before {
   content: 'Your turn';
-  position: absolute;
+  position: relative;
   font-size: 4vw;
   color: gold;
   text-shadow: 0 0 3px white;
-  left: -200%;
-  top: 25%;
+  bottom: 10px;
+  right: 5px;
   transition: fade
 }
 
 .your-turn-2::after {
   content: 'Your turn';
-  position: absolute;
+  position: relative;
   font-size: 4vw;
   color: gold;
   text-shadow: 0 0 3px white;
-  width: 130px;
-  left: 110%;
-  top: 25%;
+  width: 130px; 
+  right: -5px;
+  bottom: 10px;
 }
 
+.new-game{
+  display: none;
+  background: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 5px;
+}
 
 /* Media queries */ 
 @media screen and (min-width: 586px){
@@ -370,4 +370,11 @@ a:hover{
     font-size: 146px;
   }
 
+}
+
+.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: ease-in 0.5s;
 }
