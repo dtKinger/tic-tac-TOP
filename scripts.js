@@ -1,4 +1,5 @@
 const startBtn = document.getElementById('start-game');
+const startP1Btn = document.getElementById('start-P1-game');
 const squares = document.querySelectorAll('.square');
 const markers = document.querySelectorAll('.marker');
 const username1 = document.querySelector('#username1')
@@ -76,16 +77,27 @@ const board = (() => {
 
 const game = (() => {
 
+  let mode = '';
+
   let signIn = () => {
     let p1Name = prompt('Player 1 username');
     player1 = player(p1Name, 'x', true);
     username1.textContent = player1.username;
     
-    let p2Name = prompt('Player 2 username');
-    player2 = player(p2Name, 'o', false);
-    username2.textContent = player2.username;
+    if (game.mode === 'players2'){
+      let p2Name = prompt('Player 2 username');
+      player2 = player(p2Name, 'o', false);
+      username2.textContent = player2.username;
+    } else {
+      player2 = player('AI', 'o', false);
+      username2.textContent = player2.username;
+    }
 
     // Init the first turn
+    /// Clear Your turn for a New Game
+    username1.classList.remove('your-turn');
+    username2.classList.remove('your-turn');
+    /// Init player 1
     username1.classList.add('your-turn');
   }
 
@@ -101,16 +113,16 @@ const game = (() => {
   /// Define possible wins
   let winningConfigs = {
     // Row wins
-    "row1Win": [0, 1, 2], // 3
-    "row2Win": [3, 4, 5], // 12
-    "row3Win": [6, 7, 8], // 21
+    "row1Win": [0, 1, 2],
+    "row2Win": [3, 4, 5],
+    "row3Win": [6, 7, 8],
     // Col wins
-    "col1Win": [0, 3, 6], // 9
-    "col2Win": [1, 4, 7], // 12
-    "col3Win": [2, 5, 8], // 15
+    "col1Win": [0, 3, 6],
+    "col2Win": [1, 4, 7],
+    "col3Win": [2, 5, 8],
     // Diagonal wins
-    "diagNESW": [2, 4, 6], // 12
-    "diagSENW": [0, 4, 8], // 12
+    "diagNESW": [2, 4, 6],
+    "diagSENW": [0, 4, 8], 
   };
   
   const oneTurn = () => {
@@ -134,17 +146,15 @@ const game = (() => {
 };
 
   const declareTie = () => {
-  alert('Tie game!');
-};
+    alert('Tie game!');
+  };
 
   const declareWinner = () => {
 
     setTimeout(() => {
-      // This returns "player1 wins";
       alert(`${game.winningPlayer.username} wins!`);
-  }, 10);
-  // alert(`${game.winningPlayer.username} wins!`)
-};
+    }, 10);
+  };
 
   let gameStatus = 'active';
 
@@ -154,7 +164,7 @@ const game = (() => {
     declareWinner();
   }
 
-  return { signIn, activePlayer, winningPlayer, winningConfigs, oneTurn, checkTieGame, declareTie, declareWinner, endGame, gameStatus };
+  return { mode, signIn, activePlayer, winningPlayer, winningConfigs, oneTurn, checkTieGame, declareTie, declareWinner, endGame, gameStatus };
 })();
 
 
@@ -173,8 +183,16 @@ const player = (username, marker, active) => {
   return { username, marker, active };
 };
 
+startP1Btn.addEventListener('click', () => {
+  game.mode = 'players1';
+  game.signIn();
+  closeModal();
+  dissolveMarkers();
+  showNewGame();
+});
 
 startBtn.addEventListener('click', () => {
+  game.mode = 'players2';
   game.signIn();
   closeModal();
   dissolveMarkers();
