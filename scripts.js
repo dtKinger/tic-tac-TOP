@@ -14,12 +14,22 @@ const board = (() => {
   markers.forEach((marker) => {
     marker.addEventListener('mouseup', (e) => {
       if (marker.textContent == '' && game.gameStatus != 'over'){
-        marker.textContent = game.activePlayer.marker;
+        // Remove default X or O class and replace it
+        if (marker.classList.contains('x')){
+          marker.classList.remove('x')
+        } else if (marker.classList.contains('o')){
+          marker.classList.remove('o')
+        }
+        // re-add the true class.
+        marker.classList.add(activePlayer.marker);
+        // "Play" the marker
+        marker.textContent = activePlayer.marker;
+        // Update memory arrays
         let choice = e.target.getAttribute('data-id')
-        board.gameBoard.spots[choice] = game.activePlayer.marker;
-          if (game.activePlayer.username == 'player1'){
+        board.gameBoard.spots[choice] = activePlayer.marker;
+          if (activePlayer === player1){
             board.gameBoard.p1Choices.push(choice);
-          } else if (game.activePlayer.username == 'player2'){
+          } else if (activePlayer === player2){
             board.gameBoard.p2Choices.push(choice);
           }
         // On a legal move, refresh the board
@@ -45,15 +55,15 @@ const board = (() => {
     // Check if player1 won
     for (let [key, value] of Object.entries(game.winningConfigs)){
       if (value.every(x => board.gameBoard.p1Choices.includes(x.toString()))){
-        game.winningPlayer.username = player1.username;
+        game.winningPlayer = player1;
         game.endGame();
         // Then check if player 2 won.
       } else if (value.every(x => board.gameBoard.p2Choices.includes(x.toString()))){
-        game.winningPlayer.username = player2.username;
+        game.winningPlayer = player2;
         game.endGame();
       };
     };
-    if (game.winningPlayer.username == ''){
+    if (game.winningPlayer == ''){
       game.checkTieGame();
     }
   };
@@ -77,21 +87,26 @@ const board = (() => {
 
 const game = (() => {
 
-  let mode = '';
+  mode = '';
+  winningPlayer = '';
 
   let signIn = () => {
     let p1Name = prompt('Player 1 username');
-    player1 = player(p1Name, 'x', true);
+    player1 = player(p1Name, 'x');
     username1.textContent = player1.username;
     
     if (game.mode === 'players2'){
       let p2Name = prompt('Player 2 username');
-      player2 = player(p2Name, 'o', false);
+      player2 = player(p2Name, 'o');
       username2.textContent = player2.username;
     } else {
-      player2 = player('AI', 'o', false);
+      player2 = player('AI', 'o');
       username2.textContent = player2.username;
     }
+
+
+  activePlayer = player1;
+    
 
     // Init the first turn
     /// Clear Your turn for a New Game
@@ -100,14 +115,6 @@ const game = (() => {
     /// Init player 1
     username1.classList.add('your-turn');
   }
-
-  let activePlayer = {
-    username: 'player1',
-    marker: 'x'
-  }
-  let winningPlayer = {
-    username: ''
-  };
 
   // Winning configuartions
   /// Define possible wins
@@ -126,24 +133,22 @@ const game = (() => {
   };
   
   const oneTurn = () => {
-    if (game.activePlayer.username === 'player1'){
-      game.activePlayer.username = 'player2';
-      game.activePlayer.marker = 'o';
+    if (activePlayer === player1){
+      activePlayer = player2;
       username1.classList.remove('your-turn');
       username2.classList.add('your-turn-2');
     } else {
-      game.activePlayer.username = 'player1';
-      game.activePlayer.marker = 'x';
+      activePlayer = player1;
       username2.classList.remove('your-turn-2');
       username1.classList.add('your-turn');
     };
   };
 
   const checkTieGame = () => {
-  if (board.gameBoard.spots.every(value => (value != ''))){
-    declareTie();
-  }
-};
+    if (board.gameBoard.spots.every(value => (value != ''))){
+      declareTie();
+    }
+  };
 
   const declareTie = () => {
     alert('Tie game!');
@@ -164,15 +169,25 @@ const game = (() => {
     declareWinner();
   }
 
-  return { mode, signIn, activePlayer, winningPlayer, winningConfigs, oneTurn, checkTieGame, declareTie, declareWinner, endGame, gameStatus };
+  return { 
+    mode,
+    signIn,
+    winningPlayer,
+    winningConfigs,
+    oneTurn,
+    checkTieGame,
+    declareTie,
+    declareWinner,
+    endGame,
+    gameStatus 
+  };
 })();
 
 
 // Player factory function
-const player = (username, marker, active) => {
+const player = (username, marker) => {
   username,
-  marker,
-  active
+  marker
   /* not sure how to make this method work atm
   ,
   changeName = () => {
@@ -180,7 +195,7 @@ const player = (username, marker, active) => {
     username = update;
   };
   */
-  return { username, marker, active };
+  return { username, marker };
 };
 
 startP1Btn.addEventListener('click', () => {
@@ -242,6 +257,7 @@ function memBlur () {
   p1Name = '';
   p2Name = '';
   game.gameStatus = 'active'
+  activePlayer = player1;
   board.gameBoard = {
     "spots": ['', '', '', '', '', '', '', '', ''],
     "p1Choices": [],
