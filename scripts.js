@@ -13,27 +13,27 @@ const board = (() => {
   // Event listeners for marker squares
   markers.forEach((marker) => {
     marker.addEventListener('mouseup', (e) => {
-      if (marker.textContent == '' && game.gameStatus != 'over'){
+      if (marker.textContent === '' && game.gameStatus !== 'over') {
         // Remove default X or O class and replace it
-        if (marker.classList.contains('x')){
-          marker.classList.remove('x')
-        } else if (marker.classList.contains('o')){
-          marker.classList.remove('o')
+        if (marker.classList.contains('x')) {
+          marker.classList.remove('x');
+        } else if (marker.classList.contains('o')) {
+          marker.classList.remove('o');
         }
-        // re-add the true class.
-        marker.classList.add(activePlayer.marker);
+        // Re-add the true class.
+        marker.classList.add(game.activePlayer.marker);
         // "Play" the marker
-        marker.textContent = activePlayer.marker;
+        marker.textContent = game.activePlayer.marker;
         // Update memory arrays
-        let choice = e.target.getAttribute('data-id')
-        board.gameBoard.spots[choice] = activePlayer.marker;
-          if (activePlayer === player1){
-            board.gameBoard.p1Choices.push(choice);
-          } else if (activePlayer === player2){
-            board.gameBoard.p2Choices.push(choice);
-          }
-        // On a legal move, refresh the board
-        board.refreshBoard();
+        let choice = e.target.getAttribute('data-id');
+        board.gameBoard.spots[choice] = game.activePlayer.marker;
+        if (game.activePlayer === player1) {
+          board.gameBoard.p1Choices.push(choice);
+        } else if (game.activePlayer === player2) {
+          board.gameBoard.p2Choices.push(choice);
+        }
+      // On a legal move, refresh the board
+      board.refreshBoard();
       }
     });
   });
@@ -44,12 +44,11 @@ const board = (() => {
     "p2Choices": []
   };
 
-  const render = () => {
-    for (i = 0; i < board.gameBoard.spots.length; i += 1){
-      markers[i] = board.gameBoard.spots[i];
-    }
-    game.oneTurn();
-  };
+  // const render = () => {
+  //   for (i = 0; i < board.gameBoard.spots.length; i += 1){
+  //     markers[i] = board.gameBoard.spots[i];
+  //   }
+  // };
 
   const checkWinner = () => {
     // Check if player1 won
@@ -71,9 +70,16 @@ const board = (() => {
   ///  Update board.gameBoard
   const refreshBoard = () => {
     // Visually update the board to reflect new turn.
-    board.render();
+    
+    if (game.mode === 'players2'){
+    game.toggleActivePlayer();
+  } else if (game.mode === 'players1'){
+    game.aiTurn();
+   
+    game.toggleActivePlayer();
+  }
     // Check for a Winner
-    checkWinner();
+    board.checkWinner();
   }
 
   return { gameBoard, render, checkWinner, refreshBoard }; 
@@ -87,8 +93,9 @@ const board = (() => {
 
 const game = (() => {
 
-  mode = '';
-  winningPlayer = '';
+  let mode = '';
+  let winningPlayer = '';
+  let activePlayer = '';
 
   let signIn = () => {
     let p1Name = prompt('Player 1 username');
@@ -104,9 +111,7 @@ const game = (() => {
       username2.textContent = player2.username;
     }
 
-
-  activePlayer = player1;
-    
+    game.activePlayer = player1;
 
     // Init the first turn
     /// Clear Your turn for a New Game
@@ -132,17 +137,32 @@ const game = (() => {
     "diagSENW": [0, 4, 8], 
   };
   
-  const oneTurn = () => {
-    if (activePlayer === player1){
-      activePlayer = player2;
+  const toggleActivePlayer = () => {
+    if (game.activePlayer === player1){
+      game.activePlayer = player2;
       username1.classList.remove('your-turn');
       username2.classList.add('your-turn-2');
     } else {
-      activePlayer = player1;
-      username2.classList.remove('your-turn-2');
+      game.activePlayer = player1;
       username1.classList.add('your-turn');
-    };
+      username2.classList.remove('your-turn-2');
+    }
   };
+
+  const aiTurn = () => {
+    // Dumb AI - Make a random legal Move.  
+    // Place a marker
+    let aiChoice = getRandomSpot();
+    console.log(aiChoice);
+    board.gameBoard.spots[aiChoice] = game.activePlayer.marker;
+    board.gameBoard.p2Choices.push(game.activePlayer.marker);
+    
+    checkWinner();
+    // Hand it back to Human
+    game.activePlayer = player1;
+    username2.classList.remove('your-turn-2');
+    username1.classList.add('your-turn');
+  }
 
   const checkTieGame = () => {
     if (board.gameBoard.spots.every(value => (value != ''))){
@@ -170,11 +190,11 @@ const game = (() => {
   }
 
   return { 
-    mode,
+    // mode,
     signIn,
     winningPlayer,
     winningConfigs,
-    oneTurn,
+    toggleActivePlayer,
     checkTieGame,
     declareTie,
     declareWinner,
@@ -257,10 +277,27 @@ function memBlur () {
   p1Name = '';
   p2Name = '';
   game.gameStatus = 'active'
-  activePlayer = player1;
+  game.activePlayer = player1;
   board.gameBoard = {
     "spots": ['', '', '', '', '', '', '', '', ''],
     "p1Choices": [],
     "p2Choices": []
   }
 }
+
+function getRandomSpot(min, max) {
+  let emptySpots = [];
+  // Find which spaces are empty ''
+    board.gameBoard.spots.forEach( (spot, index) => {
+      if (spot === ''){
+        emptySpots.push(index);
+      }
+    });
+  // Pick a random index for the emptySpots array
+  min = 0;
+  max = emptySpots.length;
+  let randomChoice = Math.floor(Math.random() * (max - min + 1))
+  let aiChoice = emptySpots[randomChoice];
+
+  return aiChoice;
+};
