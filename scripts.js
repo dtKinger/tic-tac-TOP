@@ -24,8 +24,9 @@ const board = (() => {
         marker.classList.add(game.activePlayer.marker);
         // "Play" the marker
         marker.textContent = game.activePlayer.marker;
-        // Update memory arrays
+        // Get the player's choice
         let choice = e.target.getAttribute('data-id');
+        // Update memory arrays
         board.gameBoard.spots[choice] = game.activePlayer.marker;
         if (game.activePlayer === player1) {
           board.gameBoard.p1Choices.push(choice);
@@ -63,25 +64,22 @@ const board = (() => {
 
   ///  Update board.gameBoard
   const newTurn = () => {
-    if (game.mode === 'players2'){
-    game.toggleActivePlayer();
-  } else if (game.mode === 'players1'){
-    game.aiTurn();
-   
-    game.toggleActivePlayer();
-  }
     // Check for a Winner
     board.checkWinner();
+    
+    if (game.mode === 'players2'){
+    game.toggleActivePlayer();
+    } else if (game.mode === 'players1'){
+      game.toggleActivePlayer();
+      game.aiTurn();
+      game.toggleActivePlayer();
+    }
+  
   }
 
   return { gameBoard, checkWinner, newTurn }; 
   // winning configs here?
 })();
-
-// Write something to update p1Choices with x values from board.gameBoard.spots
-// and p2CHoices from o values in board.gameBoard.spots.
-// Do this after the click event that grabs which spot was clicked
-// but right before checking winner.
 
 const game = (() => {
 
@@ -102,10 +100,8 @@ const game = (() => {
       player2 = player('AI', 'o');
       username2.textContent = player2.username;
     }
-
+    // Init activePlayer
     game.activePlayer = player1;
-
-    // Init the first turn
     /// Clear Your turn for a New Game
     username1.classList.remove('your-turn');
     username2.classList.remove('your-turn');
@@ -142,18 +138,32 @@ const game = (() => {
   };
 
   const aiTurn = () => {
-    // Dumb AI - Make a random legal Move.  
-    // Place a marker
+
+    if (game.gameStatus !== 'over') {
+    
+    // Get the AI's choice
     let aiChoice = getRandomSpot();
     console.log(aiChoice);
-    board.gameBoard.spots[aiChoice] = game.activePlayer.marker;
-    board.gameBoard.p2Choices.push(game.activePlayer.marker);
     
-    checkWinner();
-    // Hand it back to Human
-    game.activePlayer = player1;
-    username2.classList.remove('your-turn-2');
-    username1.classList.add('your-turn');
+    // Remove default X or O class and replace it
+    if (markers[aiChoice].classList.contains('x')) {
+      markers[aiChoice].classList.remove('x');
+    } else if (markers[aiChoice].classList.contains('o')) {
+      markers[aiChoice].classList.remove('o');
+    }
+    // Re-add the true class.
+    markers[aiChoice].classList.add(game.activePlayer.marker);
+    // "Play" the marker
+    markers[aiChoice].textContent = game.activePlayer.marker;
+    
+    // Update memory
+    board.gameBoard.spots[aiChoice] = game.activePlayer.marker;
+    board.gameBoard.p2Choices.push(aiChoice.toString());
+    
+    board.checkWinner();
+    
+    }
+
   }
 
   const checkTieGame = () => {
@@ -187,6 +197,7 @@ const game = (() => {
     winningPlayer,
     winningConfigs,
     toggleActivePlayer,
+    aiTurn,
     checkTieGame,
     declareTie,
     declareWinner,
