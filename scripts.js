@@ -5,6 +5,7 @@ const markers = document.querySelectorAll('.marker');
 const username1 = document.querySelector('#username1')
 const username2 = document.querySelector('#username2');
 const newGameBtn = document.querySelector('.new-game');
+const allSquares = document.querySelector('.game-board');
 
 
 // gameBoard Module - inside an IIFE
@@ -13,7 +14,8 @@ const board = (() => {
   // Event listeners for marker squares
   markers.forEach((marker) => {
     marker.addEventListener('mouseup', (e) => {
-      if (marker.textContent === '' && game.gameStatus !== 'over') {
+      // The != null logic exists to check for the presence of disabled tag
+      if (marker.textContent === '' && game.gameStatus !== 'over' && allSquares.getAttribute('disabled') !== 'true') {
         // Remove default X or O class and replace it
         if (marker.classList.contains('x')) {
           marker.classList.remove('x');
@@ -33,6 +35,13 @@ const board = (() => {
         } else if (game.activePlayer === player2) {
           board.gameBoard.p2Choices.push(choice);
         }
+      
+        // Disable player clicks for one second.
+        allSquares.setAttribute('disabled', 'true');
+        setTimeout(() => {
+          allSquares.removeAttribute('disabled')
+        }, 1000);
+
       // On a legal move, change turns
       board.newTurn();
       }
@@ -164,7 +173,6 @@ const game = (() => {
     board.checkWinner();
     
     }
-
   }
 
   const checkTieGame = () => {
@@ -309,3 +317,4 @@ function getRandomSpot(min, max) {
 
   return aiChoice;
 };
+
