@@ -14,8 +14,10 @@ const board = (() => {
   // Event listeners for marker squares
   markers.forEach((marker) => {
     marker.addEventListener('mouseup', (e) => {
-      // The != null logic exists to check for the presence of disabled tag
-      if (marker.textContent === '' && game.gameStatus !== 'over' && allSquares.getAttribute('disabled') !== 'true') {
+      if (marker.textContent === ''
+      && game.gameStatus !== 'over'
+      && allSquares.getAttribute('disabled') !== 'true')
+      {
         // Remove default X or O class and replace it
         if (marker.classList.contains('x')) {
           marker.classList.remove('x');
@@ -35,15 +37,13 @@ const board = (() => {
         } else if (game.activePlayer === player2) {
           board.gameBoard.p2Choices.push(choice);
         }
-      
         // Disable player clicks for one second.
         allSquares.setAttribute('disabled', 'true');
         setTimeout(() => {
           allSquares.removeAttribute('disabled')
         }, 1000);
-
-      // On a legal move, change turns
-      board.newTurn();
+        // On a legal move, change turns
+        board.newTurn();
       }
     });
   });
@@ -75,7 +75,7 @@ const board = (() => {
   const newTurn = () => {
     // Check for a Winner
     board.checkWinner();
-    
+    // Pass to other player or give AI a one-second turn then pass it back
     if (game.mode === 'players2'){
     game.toggleActivePlayer();
     } else if (game.mode === 'players1'){
@@ -85,7 +85,6 @@ const board = (() => {
         game.toggleActivePlayer();
       }, 1000);      
     }
-  
   }
 
   return { gameBoard, checkWinner, newTurn }; 
