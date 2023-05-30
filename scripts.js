@@ -71,8 +71,10 @@ const board = (() => {
     game.toggleActivePlayer();
     } else if (game.mode === 'players1'){
       game.toggleActivePlayer();
-      game.aiTurn();
-      game.toggleActivePlayer();
+      setTimeout(() => {
+        game.aiTurn(),
+        game.toggleActivePlayer();
+      }, 1000);      
     }
   
   }
