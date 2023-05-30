@@ -32,8 +32,8 @@ const board = (() => {
         } else if (game.activePlayer === player2) {
           board.gameBoard.p2Choices.push(choice);
         }
-      // On a legal move, refresh the board
-      board.refreshBoard();
+      // On a legal move, change turns
+      board.newTurn();
       }
     });
   });
@@ -43,12 +43,6 @@ const board = (() => {
     "p1Choices": [],
     "p2Choices": []
   };
-
-  // const render = () => {
-  //   for (i = 0; i < board.gameBoard.spots.length; i += 1){
-  //     markers[i] = board.gameBoard.spots[i];
-  //   }
-  // };
 
   const checkWinner = () => {
     // Check if player1 won
@@ -68,9 +62,7 @@ const board = (() => {
   };
 
   ///  Update board.gameBoard
-  const refreshBoard = () => {
-    // Visually update the board to reflect new turn.
-    
+  const newTurn = () => {
     if (game.mode === 'players2'){
     game.toggleActivePlayer();
   } else if (game.mode === 'players1'){
@@ -82,7 +74,7 @@ const board = (() => {
     board.checkWinner();
   }
 
-  return { gameBoard, render, checkWinner, refreshBoard }; 
+  return { gameBoard, checkWinner, newTurn }; 
   // winning configs here?
 })();
 
