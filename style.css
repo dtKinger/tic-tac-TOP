@@ -31,7 +31,7 @@ div{
   --color-accent-b-faded: rgba(187, 161, 11, 0.75);
 
   font-size: 18px;
-  --font-size-h1: 9vw;
+  --font-size-h1: 8vw;
   --font-size-h2: 24px;
   --font-size-h3: 21px;
 
@@ -66,8 +66,7 @@ body {
 h1{
   font-size: var(--font-size-h1);
   font-weight: var(--font-weight-h1);
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 10px;
 }
 
 h2{
@@ -277,7 +276,7 @@ a:hover{
 }
 
 .username{
-  font-size: 7vw;
+  font-size: 6vw;
   position: relative;
 }
 
@@ -342,7 +341,7 @@ a:hover{
 @media screen and (min-width: 586px){
 
   .container h1 {
-    font-size: 56px;
+    font-size: 3em;
   }
 
   .vs {
@@ -354,8 +353,8 @@ a:hover{
   }
 
   .game-board{
-    max-width: 470px;
-    max-height: 470px;
+    max-width: 402px;
+    max-height: 402px;
   }
 
   .your-turn::before {
@@ -367,7 +366,7 @@ a:hover{
   }
 
   .marker {
-    font-size: 146px;
+    font-size: 7em;
   }
 
 }
