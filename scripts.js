@@ -299,7 +299,7 @@ function getRandomSpot(min, max) {
   // Pick a random index for the emptySpots array
   min = 0;
   max = emptySpots.length;
-  let randomChoice = Math.floor(Math.random() * (max - min + 1))
+  let randomChoice = Math.floor(Math.random() * (max - min))
   let aiChoice = emptySpots[randomChoice];
 
   return aiChoice;
