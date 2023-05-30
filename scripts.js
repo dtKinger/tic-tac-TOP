@@ -143,7 +143,6 @@ const game = (() => {
     
     // Get the AI's choice
     let aiChoice = getRandomSpot();
-    console.log(aiChoice);
     
     // Remove default X or O class and replace it
     if (markers[aiChoice].classList.contains('x')) {
