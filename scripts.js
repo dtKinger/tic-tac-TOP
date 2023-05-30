@@ -169,7 +169,11 @@ const game = (() => {
 
   const checkTieGame = () => {
     if (board.gameBoard.spots.every(value => (value != ''))){
-      declareTie();
+      
+      setTimeout(() => {
+        declareTie();
+      }, 10);
+      
     }
   };
 
