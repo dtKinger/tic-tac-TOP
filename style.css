@@ -337,6 +337,18 @@ a:hover{
   border-radius: 5px;
 }
 
+.welcome {
+  color:rgb(56, 56, 56);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome p {
+  padding: 4px;
+}
+
 /* Media queries */ 
 @media screen and (min-width: 586px){
 
