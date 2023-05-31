@@ -1,3 +1,4 @@
+const modal = document.querySelector('.start');
 const startBtn = document.getElementById('start-game');
 const startP1Btn = document.getElementById('start-P1-game');
 const squares = document.querySelectorAll('.square');
@@ -250,7 +251,10 @@ startBtn.addEventListener('click', () => {
 });
 
 function closeModal(){
-  startBtn.parentElement.classList.remove('show');
+  // This works, but it broke when I nested the buttons. 
+  // startBtn.parentElement.parentElement.classList.remove('show');
+  // This should be more resilient:
+  modal.classList.remove('show');
 };
 
 // The "Hidden" class gives a fadeaway animation
