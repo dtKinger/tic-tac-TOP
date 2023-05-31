@@ -282,16 +282,19 @@ function hideTurnTag(){
 
 playAgainBtn.addEventListener('click', () => {
   memBlur();
-  playAgain();
-  // modal.classList.add('show'); Explore this
+  hideTurnTag();
+  dissolveMarkers();
+  /// Init player 1
+  username1.classList.add('your-turn');
 });
 
 newGameBtn.addEventListener('click', () => {
   memBlur();
-  modal.classList.add('show'); // Explore this
+  hideTurnTag();
+  modal.classList.add('show');
 });
 
-function playAgain () {
+function newGame () {
   game.signIn();
   closeModal();
   dissolveMarkers();
@@ -303,8 +306,6 @@ function showPlayAgain() {
 };
 
 function memBlur () {
-  p1Name = '';
-  p2Name = '';
   game.gameStatus = 'active'
   game.activePlayer = player1;
   board.gameBoard = {
