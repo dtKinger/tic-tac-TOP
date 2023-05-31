@@ -308,6 +308,7 @@ function showPlayAgain() {
 function memBlur () {
   game.gameStatus = 'active'
   game.activePlayer = player1;
+  game.winningPlayer = '';
   board.gameBoard = {
     "spots": ['', '', '', '', '', '', '', '', ''],
     "p1Choices": [],
