@@ -293,12 +293,13 @@ a:hover{
   display: none;
   position: fixed;
   z-index: 2;
-  width: 90vw;
-  height: 75vh;
-  max-height: 530px;
+  width: 500px;
+  height: 500px;
   background-color: rgba(255, 255, 255, 0.90);
-  left: 5%;
-  top: min(150px, 15vw);
+  top: 50%;
+  left: 50%;
+  margin-top: -250px; /* Negative half of height. */
+  margin-left: -250px; /* Negative half of width. */
 }
 
 .hidden {
@@ -357,7 +358,27 @@ a:hover{
   padding: 4px;
 }
 
-/* Media queries */ 
+/* Media queries */
+
+@media screen and (max-width: 586px){
+  .start{
+    width: 90vw;
+    height: 90vw;
+    margin-left: calc(-1 * (90vw / 2)); /* Negative half of width. */
+    min-width: 300px;
+    min-height: 300px;
+  }
+}
+
+@media screen and (max-width: 360px){
+  .start{
+    width: 320px;
+    height: 320px;
+    margin-left: -162px; /* Negative half of width. */
+    
+  }
+}
+
 @media screen and (min-width: 586px){
 
   .container h1 {
