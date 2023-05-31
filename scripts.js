@@ -5,6 +5,7 @@ const squares = document.querySelectorAll('.square');
 const markers = document.querySelectorAll('.marker');
 const username1 = document.querySelector('#username1')
 const username2 = document.querySelector('#username2');
+const playAgainBtn = document.querySelector('.play-again');
 const newGameBtn = document.querySelector('.new-game');
 const allSquares = document.querySelector('.game-board');
 
@@ -39,10 +40,12 @@ const board = (() => {
           board.gameBoard.p2Choices.push(choice);
         }
         // Disable player clicks for one second.
-        allSquares.setAttribute('disabled', 'true');
-        setTimeout(() => {
-          allSquares.removeAttribute('disabled')
-        }, 1000);
+        if (game.mode === 'players1'){
+          allSquares.setAttribute('disabled', 'true');
+          setTimeout(() => {
+            allSquares.removeAttribute('disabled')
+          }, 1000);
+        }
         // On a legal move, change turns
         board.newTurn();
       }
@@ -239,7 +242,7 @@ startP1Btn.addEventListener('click', () => {
   game.signIn();
   closeModal();
   dissolveMarkers();
-  showNewGame();
+  showPlayAgain();
 });
 
 startBtn.addEventListener('click', () => {
@@ -247,7 +250,7 @@ startBtn.addEventListener('click', () => {
   game.signIn();
   closeModal();
   dissolveMarkers();
-  showNewGame();
+  showPlayAgain();
 });
 
 function closeModal(){
@@ -277,19 +280,26 @@ function hideTurnTag(){
   username2.classList.remove('your-turn-2');
 };
 
-newGameBtn.addEventListener('click', () => {
-  newGame();
+playAgainBtn.addEventListener('click', () => {
   memBlur();
+  playAgain();
+  // modal.classList.add('show'); Explore this
 });
 
-function newGame () {
+newGameBtn.addEventListener('click', () => {
+  memBlur();
+  modal.classList.add('show'); // Explore this
+});
+
+function playAgain () {
   game.signIn();
   closeModal();
   dissolveMarkers();
 }
 
-function showNewGame() {
-  newGameBtn.classList.add('show')
+function showPlayAgain() {
+  playAgainBtn.classList.add('show');
+  newGameBtn.classList.add('show');
 };
 
 function memBlur () {

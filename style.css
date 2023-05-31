@@ -329,12 +329,20 @@ a:hover{
   bottom: 10px;
 }
 
-.new-game{
+.new-game, .play-again{
   display: none;
   background: white;
   color: black;
   border: 2px solid black;
   border-radius: 5px;
+}
+
+.play-again-buttons{
+  display: flex;
+  flex-direction: row;
+  max-width: 400px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .welcome {
